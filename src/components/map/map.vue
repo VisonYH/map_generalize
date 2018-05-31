@@ -174,13 +174,15 @@ export default {
               }
             })
             map.addLayer(simplifiedLayer)
-            this.add({
-              title: 'download origin data',
-              classname: 'btn download',
-              text: 'DS',
-              download: 'simplified_data.geojson',
-              href: URL.createObjectURL(new Blob([JSON.stringify(simplifiedData)]))
-            })
+            if (!this._ds) {
+              this._ds = this.add({
+                title: 'download origin data',
+                classname: 'btn download',
+                text: 'DS',
+                download: 'simplified_data.geojson',
+                href: URL.createObjectURL(new Blob([JSON.stringify(simplifiedData)]))
+              })
+            }
           }, false)
         },
         title: 'simplify',
@@ -256,29 +258,16 @@ export default {
       el.title = options.title
       el.href = options.href
       el.className = options.classname
-      el.download = options.download
+      if (options.download) {
+        el.download = options.download
+      }
       el.innerHTML = '<span class="color">' + options.text + '</span>'
       container.appendChild(el)
       if (options.callback) {
         options.callback(el)
       }
+      return el
     }
-    // addBtn (options) {
-    //   var container = JQuery('.leaflet-draw-edit-edit').parent()[0]
-    //   let downLoadOriginEl = document.createElement('a')
-    //   downLoadOriginEl.title = 'download origin data'
-    //   downLoadOriginEl.className = 'btn download'
-    //   downLoadOriginEl.download = 'raw_data.geojson'
-    //   downLoadOriginEl.href = URL.createObjectURL(new Blob([fetchData]))
-    //   downLoadOriginEl.innerHTML = '<span class="color">DR</span>'
-    //   container.appendChild(downLoadOriginEl)
-
-    //   let downLoadSimEl = document.createElement('a')
-    //   downLoadSimEl.title = 'download origin data'
-    //   downLoadSimEl.className = 'btn download'
-    //   downLoadSimEl.innerHTML = '<span class="color">DS</span>'
-    //   container.appendChild(downLoadSimEl)
-    // }
   }
 }
 </script>
